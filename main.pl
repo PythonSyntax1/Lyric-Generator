@@ -1,5 +1,5 @@
 %Reference : https://wiki.ubc.ca/Course:CPSC312-2019/ChomskySentenceGenerator. Our project is inspired by the project linked here. 
-%Ideas for the code at these lines are inspired by, or based on the ideas in the resource's code. : 7-12, 122, 131, 153-211. 
+%The code at these lines are inspired by, or based on ideas in the resource's code. (With permission granted by the repo owner) : 7-12, 122, 131, 153-211. 
 %The details of the reference above are explained in comments above or at those line numbers. We refer to this project as "CSG" throughout the code for the references.
 
 %Get user requirements with simple error handling, generate poem and then output the poem. Starting generator by getting user preference (7-12), inspired by CSG.
@@ -119,7 +119,7 @@ getnewline(0, N, Rhyme, NR) :-
 findAdj2(X, [], X).
 findAdj2(X, [H|T], Y) :-
 	member(X, H),
-	rand(Y, H). %randomly selecting word from list inspired by CSG
+	rand(Y, H). %randomly selecting word based on CSG
 
 findAdj2(X, [H|T], Y1) :-
 	findAdj2(X, T, Y1).
@@ -128,7 +128,7 @@ findAdj2(X, [H|T], Y1) :-
 findNoun2(X, [], X).
 findNoun2(X, [H|T], Y) :-
 	member(X, H),
-	rand(Y, H). %randomly selecting word from list inspired by CSG
+	rand(Y, H). %randomly selecting word based on CSG
 
 findNoun2(X, [H|T], Y1) :-
 	findNoun2(X, T, Y1).
@@ -168,8 +168,8 @@ proList(['your', 'my', 'his', 'her', 'their']).
 
 subjList(['I', 'you', 'he', 'she', 'they']).
 
-%These functions below (Lines 174 - 183) grab a single world, but they handle rhyming, and grouping words into rhymes. 
-%This is inspired by CSG, particularly the idea of getting a single random word at a time (Reference Above) 
+%These functions below (Lines 174 - 183) will get a single word NR that rhymes with Rhyme. They pass a list that groups words into rhymes. 
+%This selects a word randomly from a list of appropriate words, which is based on CSG (Reference Above) 
 %Find a rhyming adjective NR for Rhyme
 getLastAdj(NR, Rhyme) :-
 	Rhyme \= none,
@@ -182,8 +182,8 @@ getLastNoun(NR, Rhyme) :-
 getLastNoun(Noun, none) :- nounList(Noun_List), rand(Noun, Noun_List).
 getLastAdj(Adj, none) :- adjList(Adj_List), rand(Adj, Adj_List).
 
-%Idea for generating sentences word by word, and selecting these words randomly (Functions from lines 187-197) is based on CSG. (Reference above)
-%Builds the sentece word by word, with phrases that could be present in poems. Grabs all lists of words needed, and then randomly selects a member from each list when needed.
+%Generates sentences word by word, and selects these words randomly (Functions from lines 187-197) Based on CSG. (Reference above)
+%Algorithm : Grabs all lists of words needed, and then randomly selects a member from each list when needed.
 fiveSentenceTypeOne([Adj1, Noun, 'is', Adj2, Adj3], Rhyme, Adj3) :-  nounList(N), adjList(A), adjLyList(A2), rand(Adj1, A), rand(Noun, N), rand(Adj2, A2), getLastAdj(Adj3, Rhyme).
 fiveSentenceTypeTwo([Adj1, Noun1, Verb, Adj2, Noun2], Rhyme, Noun2) :- adjList(A), verbPastList(V), nounList(N), rand(Adj1, A), rand(Noun1, N), rand(Adj2, A), rand(Verb, V), getLastNoun(Noun2, Rhyme). 
 fiveSentenceTypeThree([Verb, 'the', Adj1, Adj2, Noun], Rhyme, Noun) :- nounList(N), adjList(A), adjLyList(A2), verbPresList(V), rand(Verb, V), rand(Adj1, A2), rand(Adj2, A), getLastNoun(Noun, Rhyme).
@@ -196,7 +196,7 @@ sevenSentenceTypeOne([Adj1, Noun, 'is', 'as', Adj2, 'as', Noun2], Rhyme, Noun2) 
 sevenSentenceTypeTwo([Pro, Adj, Noun, 'is', 'like', Adj2, Noun2], Rhyme, Noun2) :- adjList(A), nounList(N), proList(P), rand(Pro, P), rand(Adj, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
 sevenSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Adj2, Noun], Rhyme, Noun) :-  subjList(S), advList(A), verbPresList(V), proList(P), adjLyList(AL), adjList(AJ), rand(Subj, S), rand(Adv, A), rand(Verb, V), rand(Pro, P), rand(Adj, AL), rand(Adj2, AJ), getLastNoun(Noun, Rhyme).
 
-%Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (201-211) Idea inspired by CSG (Reference above).
+%Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (201-211) Inspired by CSG (Reference above).
 %The poem is generated as a list of lists. This function calls formatLineOutput on each list, and then prints a new line.
 formatOutput([]).
 formatOutput([LINE|T]) :- formatLineOutput(LINE),

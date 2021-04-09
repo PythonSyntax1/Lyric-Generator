@@ -1,4 +1,4 @@
-# Prolog-App
+# Lyric Generator
 
 **To Start:**
 

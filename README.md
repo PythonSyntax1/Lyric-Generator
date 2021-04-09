@@ -8,13 +8,10 @@
 
 - The poem will be formatted and printed to the console. Example below :  
 
-_tame the artistically fuzzy goal 
-
-_lovely brain kills corageously throughout soul 
-
-_tame the artistically dreamy heart 
-
-_dreamy heart loves deeply into art 
+tame the artistically fuzzy goal   
+lovely brain kills corageously throughout soul  
+tame the artistically dreamy heart   
+dreamy heart loves deeply into art   
  
 
 Reference : 

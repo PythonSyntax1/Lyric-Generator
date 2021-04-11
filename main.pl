@@ -1,5 +1,5 @@
-%Reference : https://wiki.ubc.ca/Course:CPSC312-2019/ChomskySentenceGenerator. Our project is inspired by the project linked here. 
-%The code at these lines are inspired by, or based on ideas in the resource's code. (With permission granted by the repo owner) : 7-12, 122, 131, 153-211. 
+%Reference : https://wiki.ubc.ca/Course:CPSC312-2019/ChomskySentenceGenerator. Our project is inspired by / based on the project linked here. 
+%The code at these lines are inspired by, or based on the resource's code. (With permission granted by the repo owner) : 7-12, 122, 131, 153-217. 
 %The details of the reference above are explained in comments above or at those line numbers. We refer to this project as "CSG" throughout the code for the references.
 
 %Get user requirements with simple error handling, generate poem and then output the poem. Starting generator by getting user preference (7-12), inspired by CSG.
@@ -149,7 +149,7 @@ generateRandomLine(7, N, Rhyme, NR) :- sevenSentenceTypeOne(N, Rhyme, NR).
 generateRandomLine(8, N, Rhyme, NR) :- sevenSentenceTypeTwo(N, Rhyme, NR).
 generateRandomLine(9, N, Rhyme, NR) :- sevenSentenceTypeThree(N, Rhyme, NR).
 
-%Idea of grouping words of different types (Nouns, Adjectives, Adverbs) in seperate lists (Lines 153-169) is based on CSG, reference above.
+%These predicates group words of different types (Nouns, Adjectives, Adverbs) in seperate lists. (Lines 153-169) Based on CSG, reference above.
 nounList(['love', 'heart', 'soul', 'brain', 'dove', 'art', 'goal', 'campaign']).
 
 adjList(['beautiful', 'lovely', 'graceful', 'lucky', 'fuzzy', 'lively', 'dreamy','fantastic', 'nostalgic', 'exotic']).
@@ -168,8 +168,8 @@ proList(['your', 'my', 'his', 'her', 'their']).
 
 subjList(['I', 'you', 'he', 'she', 'they']).
 
-%These functions below (Lines 174 - 183) will get a single word NR that rhymes with Rhyme. They pass a list that groups words into rhymes. 
-%This selects a word randomly from a list of appropriate words, which is based on CSG (Reference Above) 
+%These functions below (Lines 174 - 183) will get a single word NR that rhymes with Rhyme. They pass a list of list that groups words into rhymes. 
+%This selects a word randomly from a list of appropriate words : Based on CSG (Reference Above) 
 %Find a rhyming adjective NR for Rhyme
 getLastAdj(NR, Rhyme) :-
 	Rhyme \= none,
@@ -210,14 +210,15 @@ formatLineOutput([H|T]) :-
 	write(" "),
 	formatLineOutput(T).
 
-%Custom function for random selection from list. There is an option to have weighted random selection, where words at the front are more likely to be chosen. Uncomment 207-209 for this.
+%Custom function for random selection from list. Inspired by CSG (214-217).
 rand(X, Lst) :-
 	length(Lst, L),
 	random(0, L, L1),
+	nth0(L1, Lst, X). %There is an option to have weighted random selection, where words at the front are more likely to be chosen. Uncomment 218-220, and comment out 217 for this.
 	% random(0, L, L2),	
 	% min(L2, L1, L3),
 	% nth0(L3, Lst, X).
-	nth0(L1, Lst, X).
+	
 
 %Returns the smaller of two numbers
 min(L2, L1, L2) :- L2 > L1.

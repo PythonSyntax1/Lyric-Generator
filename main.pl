@@ -1,8 +1,8 @@
 %Reference : https://wiki.ubc.ca/Course:CPSC312-2019/ChomskySentenceGenerator. Our project is inspired by / based on the project linked here. 
-%The code at these lines are inspired by, or based on the resource's code. (With permission granted by the repo owner) : 7-12, 122, 131, 153-217. 
+%The code at these lines are inspired by, or based on the resource's code. (With permission granted by the repo owner) : 7-14, 124, 133, 156-224. 
 %The details of the reference above are explained in comments above or at those line numbers. We refer to this project as "CSG" throughout the code for the references.
 
-%Get user requirements with simple error handling, generate poem and then output the poem. Starting generator by getting user preference (7-12), inspired by CSG.
+%Get user requirements with simple error handling, generate poem and then output the poem. Starting generator by getting user preference (7-14), inspired by CSG.
 main:-
 	write("How many lines would you like the lyrics to have? Enter 0 for random. \n"),
 	read(Lines),
@@ -151,38 +151,26 @@ generateRandomLine(7, N, Mood, Rhyme, NR) :- sevenSentenceTypeOne(N, Mood, Rhyme
 generateRandomLine(8, N, Mood, Rhyme, NR) :- sevenSentenceTypeTwo(N, Mood, Rhyme, NR).
 generateRandomLine(9, N, Mood, Rhyme, NR) :- sevenSentenceTypeThree(N, Mood, Rhyme, NR).
 
-%These predicates group words of different types (Nouns, Adjectives, Adverbs) in seperate lists. (Lines 153-169) Based on CSG, reference above.
+%These predicates group words of different types (Nouns, Adjectives, Adverbs) in seperate lists. (Lines 156-168) Based on CSG, reference above.
+
 nounList(['love', 'heart', 'soul', 'brain', 'dove', 'art', 'goal', 'campaign']).
-
-adjList(['beautiful', 'lovely', 'graceful', 'lucky', 'fuzzy', 'lively', 'dreamy','fantastic', 'nostalgic', 'exotic'], Mood) :-
-	Mood \= happy,
-	Mood \= sad.
-
+adjList(['beautiful', 'lovely', 'graceful', 'lucky', 'fuzzy', 'lively', 'dreamy','fantastic', 'nostalgic', 'exotic'], Mood) :- Mood \= happy, Mood \= sad.
 adjList(['cheerful', 'peaceful', 'blissful', 'contented', 'delighted', 'elated', 'jubilant', 'exultant', 'pleasant'], happy).
 adjList(['bitter', 'somber', 'darker', 'dismal', 'miserable', 'deplorable', 'gloomy', 'unhappy', 'melancholy'], sad).
-
-adjLyList(['beautifully', 'gracefully', 'corageously', 'artistically'], Mood) :-
-	Mood \= happy,
-	Mood \= sad.
-	
+adjLyList(['beautifully', 'gracefully', 'corageously', 'artistically'], Mood) :- Mood \= happy, Mood \= sad.
 adjLyList(['gladly', 'joyfully', 'heartily', 'graciously', 'merrily'], happy).
 adjLyList(['dolefully', 'grievously', 'morosely', 'sorely'], sad).
-
 verbPastList(['tames', 'loves', 'betrays', 'kills', 'lives']).
-
 verbPresList(['tame', 'love', 'betray', 'kill', 'live']).
-
 prepList(['through', 'in', 'throughout', 'into']).
-
 advList(['deeply', 'beautifully', 'corageously', 'gracefully']).
-
 proList(['your', 'my', 'his', 'her', 'their']).
-
 subjList(['I', 'you', 'he', 'she', 'they']).
 
-%These functions below (Lines 174 - 183) will get a single word NR that rhymes with Rhyme. They pass a list of list that groups words into rhymes. 
-%This selects a word randomly from a list of appropriate words : Based on CSG (Reference Above) 
+%These functions below (Lines 173 - 194) will get a single word NR that rhymes with Rhyme. They pass a list of list that groups words into rhymes. 
+%Lists are based on a mood (happy, sad, or neither). This selects a word randomly from a list of appropriate words : Based on CSG (Reference Above) 
 %Find a rhyming adjective NR for Rhyme
+getLastAdj(Adj, Mood, none) :- adjList(Adj_List, Mood), rand(Adj, Adj_List).
 getLastAdj(NR, happy, Rhyme) :-
 	Rhyme \= none,
 	findAdj2(Rhyme, [['cheerful', 'peaceful', 'blissful'],['contented', 'delighted', 'elated'],['jubilant', 'exultant', 'pleasant']], NR).
@@ -198,17 +186,10 @@ getLastAdj(NR, E, Rhyme) :-
 	findAdj2(Rhyme, [['beautiful', 'colorful', 'graceful'],['fantastic', 'nostalgic', 'exotic'],['lovely', 'lucky', 'fuzzy', 'lively', 'dreamy']], NR).
 
 %Find a rhyming noun NR for Rhyme
-getLastNoun(NR, Rhyme) :-
-	Rhyme \= none,
-	findNoun2(Rhyme, [['love', 'dove'], ['heart', 'art'], ['soul', 'goal'], ['brain', 'campaign']], NR).
-
+getLastNoun(NR, Rhyme) :- Rhyme \= none, findNoun2(Rhyme, [['love', 'dove'], ['heart', 'art'], ['soul', 'goal'], ['brain', 'campaign']], NR).
 getLastNoun(Noun, none) :- nounList(Noun_List), rand(Noun, Noun_List).
 
-getLastAdj(Adj, Mood, none) :- 
-	adjList(Adj_List, Mood),
-	rand(Adj, Adj_List).
-
-%Generates sentences word by word, and selects these words randomly (Functions from lines 187-197) Based on CSG. (Reference above)
+%Generates sentences word by word, and selects these words randomly (Functions from lines 198-208) Based on CSG. (Reference above)
 %Algorithm : Grabs all lists of words needed from the lists at lines 153-169, and then randomly selects a member from the lists to build the line. 
 fiveSentenceTypeOne([Adj1, Noun, 'is', Adj2, Adj3], Mood, Rhyme, Adj3) :-  nounList(N), adjList(A, Mood), adjLyList(A2, Mood), rand(Adj1, A), rand(Noun, N), rand(Adj2, A2), getLastAdj(Adj3, Mood, Rhyme).
 fiveSentenceTypeTwo([Adj1, Noun1, Verb, Adj2, Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), verbPastList(V), nounList(N), rand(Adj1, A), rand(Noun1, N), rand(Adj2, A), rand(Verb, V), getLastNoun(Noun2, Rhyme). 
@@ -222,7 +203,7 @@ sevenSentenceTypeOne([Adj1, Noun, 'is', 'as', Adj2, 'as', Noun2], Mood, Rhyme, N
 sevenSentenceTypeTwo([Pro, Adj, Noun, 'is', 'like', Adj2, Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), nounList(N), proList(P), rand(Pro, P), rand(Adj, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
 sevenSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Adj2, Noun], Mood, Rhyme, Noun) :-  subjList(S), advList(A), verbPresList(V), proList(P), adjLyList(AL, Mood), adjList(AJ, Mood), rand(Subj, S), rand(Adv, A), rand(Verb, V), rand(Pro, P), rand(Adj, AL), rand(Adj2, AJ), getLastNoun(Noun, Rhyme).
 
-%Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (201-211) Inspired by CSG (Reference above).
+%Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (212-222) Inspired by CSG (Reference above).
 %The poem is generated as a list of lists. This function calls formatLineOutput on each list, and then prints a new line.
 formatOutput([]).
 formatOutput([LINE|T]) :- formatLineOutput(LINE),
@@ -236,7 +217,7 @@ formatLineOutput([H|T]) :-
 	write(" "),
 	formatLineOutput(T).
 
-%Custom function for random selection from list. Inspired by CSG (214-217).
+%Custom function for random selection from list. Inspired by CSG (225-228).
 rand(X, Lst) :-
 	length(Lst, L),
 	random(0, L, L1),

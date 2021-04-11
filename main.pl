@@ -43,22 +43,22 @@ linesInputHandler(Lines, L) :-
 
 %Handles the case where user enters between 5-7 for amount of words per line
 sizeInputHandler(Size, Size) :- 
-	number(Lines),
+	number(Size),
 	Size > 4,
 	Size < 8.
 
 %Handles the case where user enters a number outside of range 5-7. (Too big, negative or too small) Sets size to random (0).
 sizeInputHandler(Size, 0) :- 
-	number(Lines),
+	number(Size),
 	Size < 5.
 
 sizeInputHandler(Size, 0) :- 
-	number(Lines),
+	number(Size),
 	Size > 7.
 
 %Handles the case where user enters a non-number. 
 sizeInputHandler(Size, 0) :-
-	not(number(Lines)).
+	not(number(Size)).
 
 % Handles case where user does not input number for size
 % sizeInputHandler(Size, 0) :- not(number(Size)).
@@ -183,7 +183,7 @@ getLastNoun(Noun, none) :- nounList(Noun_List), rand(Noun, Noun_List).
 getLastAdj(Adj, none) :- adjList(Adj_List), rand(Adj, Adj_List).
 
 %Generates sentences word by word, and selects these words randomly (Functions from lines 187-197) Based on CSG. (Reference above)
-%Algorithm : Grabs all lists of words needed, and then randomly selects a member from each list when needed.
+%Algorithm : Grabs all lists of words needed from the lists at lines 153-169, and then randomly selects a member from the lists to build the line. 
 fiveSentenceTypeOne([Adj1, Noun, 'is', Adj2, Adj3], Rhyme, Adj3) :-  nounList(N), adjList(A), adjLyList(A2), rand(Adj1, A), rand(Noun, N), rand(Adj2, A2), getLastAdj(Adj3, Rhyme).
 fiveSentenceTypeTwo([Adj1, Noun1, Verb, Adj2, Noun2], Rhyme, Noun2) :- adjList(A), verbPastList(V), nounList(N), rand(Adj1, A), rand(Noun1, N), rand(Adj2, A), rand(Verb, V), getLastNoun(Noun2, Rhyme). 
 fiveSentenceTypeThree([Verb, 'the', Adj1, Adj2, Noun], Rhyme, Noun) :- nounList(N), adjList(A), adjLyList(A2), verbPresList(V), rand(Verb, V), rand(Adj1, A2), rand(Adj2, A), getLastNoun(Noun, Rhyme).

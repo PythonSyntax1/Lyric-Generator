@@ -167,7 +167,7 @@ advList(['deeply', 'beautifully', 'corageously', 'gracefully']).
 proList(['your', 'my', 'his', 'her', 'their']).
 subjList(['I', 'you', 'he', 'she', 'they']).
 
-%These functions below (Lines 173 - 194) will get a single word NR that rhymes with Rhyme. They pass a list of list that groups words into rhymes. 
+%These functions below (Lines 173 - 190) will get a single word NR that rhymes with Rhyme. They pass a list of list that groups words into rhymes. 
 %Lists are based on a mood (happy, sad, or neither). This selects a word randomly from a list of appropriate words : Based on CSG (Reference Above) 
 %Find a rhyming adjective NR for Rhyme
 getLastAdj(Adj, Mood, none) :- adjList(Adj_List, Mood), rand(Adj, Adj_List).
@@ -189,7 +189,7 @@ getLastAdj(NR, E, Rhyme) :-
 getLastNoun(NR, Rhyme) :- Rhyme \= none, findNoun2(Rhyme, [['love', 'dove'], ['heart', 'art'], ['soul', 'goal'], ['brain', 'campaign']], NR).
 getLastNoun(Noun, none) :- nounList(Noun_List), rand(Noun, Noun_List).
 
-%Generates sentences word by word, and selects these words randomly (Functions from lines 198-208) Based on CSG. (Reference above)
+%Generates sentences word by word, and selects these words randomly (Functions from lines 194-204) Based on CSG. (Reference above)
 %Algorithm : Grabs all lists of words needed from the lists at lines 153-169, and then randomly selects a member from the lists to build the line. 
 fiveSentenceTypeOne([Adj1, Noun, 'is', Adj2, Adj3], Mood, Rhyme, Adj3) :-  nounList(N), adjList(A, Mood), adjLyList(A2, Mood), rand(Adj1, A), rand(Noun, N), rand(Adj2, A2), getLastAdj(Adj3, Mood, Rhyme).
 fiveSentenceTypeTwo([Adj1, Noun1, Verb, Adj2, Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), verbPastList(V), nounList(N), rand(Adj1, A), rand(Noun1, N), rand(Adj2, A), rand(Verb, V), getLastNoun(Noun2, Rhyme). 
@@ -203,7 +203,7 @@ sevenSentenceTypeOne([Adj1, Noun, 'is', 'as', Adj2, 'as', Noun2], Mood, Rhyme, N
 sevenSentenceTypeTwo([Pro, Adj, Noun, 'is', 'like', Adj2, Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), nounList(N), proList(P), rand(Pro, P), rand(Adj, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
 sevenSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Adj2, Noun], Mood, Rhyme, Noun) :-  subjList(S), advList(A), verbPresList(V), proList(P), adjLyList(AL, Mood), adjList(AJ, Mood), rand(Subj, S), rand(Adv, A), rand(Verb, V), rand(Pro, P), rand(Adj, AL), rand(Adj2, AJ), getLastNoun(Noun, Rhyme).
 
-%Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (212-222) Inspired by CSG (Reference above).
+%Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (208-218) Inspired by CSG (Reference above).
 %The poem is generated as a list of lists. This function calls formatLineOutput on each list, and then prints a new line.
 formatOutput([]).
 formatOutput([LINE|T]) :- formatLineOutput(LINE),
@@ -217,7 +217,7 @@ formatLineOutput([H|T]) :-
 	write(" "),
 	formatLineOutput(T).
 
-%Custom function for random selection from list. Inspired by CSG (225-228).
+%Custom function for random selection from list. Inspired by CSG (221-224).
 rand(X, Lst) :-
 	length(Lst, L),
 	random(0, L, L1),

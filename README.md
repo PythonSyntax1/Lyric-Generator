@@ -15,6 +15,6 @@ dreamy heart loves deeply into art
  
 
 Reference : 
-- https://wiki.ubc.ca/Course:CPSC312-2019/ChomskySentenceGenerator  - Our project was inspired by this project, thank you to Josh! Pieces of our code are based on / inspired by ideas in their code. (With permission granted by the Repo Owner). For example, generating sentences random word by random word, and grouping words by parts of speech. The specific usages of the project are described at the top of main.pl, and throughout the code. 
+- https://wiki.ubc.ca/Course:CPSC312-2019/ChomskySentenceGenerator  - Our project was inspired by this project, thank you to Joshua! Pieces of our code are based on / inspired by ideas in their code. (With permission granted by the Repo Owner). For example, generating sentences random word by random word, and grouping words by parts of speech. The specific usages of the project are described at the top of main.pl, and throughout the code. 
 
 

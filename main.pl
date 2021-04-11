@@ -154,13 +154,19 @@ generateRandomLine(9, N, Mood, Rhyme, NR) :- sevenSentenceTypeThree(N, Mood, Rhy
 %These predicates group words of different types (Nouns, Adjectives, Adverbs) in seperate lists. (Lines 153-169) Based on CSG, reference above.
 nounList(['love', 'heart', 'soul', 'brain', 'dove', 'art', 'goal', 'campaign']).
 
-adjList(['beautiful', 'lovely', 'graceful', 'lucky', 'fuzzy', 'lively', 'dreamy','fantastic', 'nostalgic', 'exotic']).
-happyAdjList(['cheerful', 'peaceful', 'blissful', 'contented', 'delighted', 'elated', 'jubilant', 'exultant', 'pleasant']).
-sadAdjList(['bitter', 'somber', 'darker', 'dismal', 'miserable', 'deplorable', 'gloomy', 'unhappy', 'melancholy']).
+adjList(['beautiful', 'lovely', 'graceful', 'lucky', 'fuzzy', 'lively', 'dreamy','fantastic', 'nostalgic', 'exotic'], Mood) :-
+	Mood \= happy,
+	Mood \= sad.
 
-adjLyList(['beautifully', 'gracefully', 'corageously', 'artistically']).
-happyAdjLyList(['gladly', 'joyfully', 'heartily', 'graciously', 'merrily']).
-sadAdjLyList(['dolefully', 'grievously', 'morosely', 'sorely']).
+adjList(['cheerful', 'peaceful', 'blissful', 'contented', 'delighted', 'elated', 'jubilant', 'exultant', 'pleasant'], happy).
+adjList(['bitter', 'somber', 'darker', 'dismal', 'miserable', 'deplorable', 'gloomy', 'unhappy', 'melancholy'], sad).
+
+adjLyList(['beautifully', 'gracefully', 'corageously', 'artistically'], Mood) :-
+	Mood \= happy,
+	Mood \= sad.
+	
+adjLyList(['gladly', 'joyfully', 'heartily', 'graciously', 'merrily'], happy).
+adjLyList(['dolefully', 'grievously', 'morosely', 'sorely'], sad).
 
 verbPastList(['tames', 'loves', 'betrays', 'kills', 'lives']).
 
@@ -198,55 +204,23 @@ getLastNoun(NR, Rhyme) :-
 
 getLastNoun(Noun, none) :- nounList(Noun_List), rand(Noun, Noun_List).
 
-getLastAdj(Adj, happy, none) :- 
-	happyAdjList(Adj_List),
+getLastAdj(Adj, Mood, none) :- 
+	adjList(Adj_List, Mood),
 	rand(Adj, Adj_List).
-	
-getLastAdj(Adj, sad, none) :- 
-	sadAdjList(Adj_List),
-	rand(Adj, Adj_List).
-	
-getLastAdj(Adj, E, none) :-
-	E \= happy,
-	E \= sad,
-	adjList(Adj_List),
-	rand(Adj, Adj_List).
-
-adjMoodList(A, happy) :-
-	happyAdjList(A).
-
-adjMoodList(A, sad) :-
-	sadAdjList(A).
-	
-adjMoodList(A, E) :-
-	E \= happy,
-	E \= sad,
-	adjList(A).
-	
-adjLyMoodList(A2, happy) :-
-	happyAdjLyList(A2).
-
-adjLyMoodList(A2, sad) :-
-	sadAdjLyList(A2).
-	
-adjLyMoodList(A2, E) :-
-	E \= happy,
-	E \= sad,
-	adjLyList(A2).	
 
 %Generates sentences word by word, and selects these words randomly (Functions from lines 187-197) Based on CSG. (Reference above)
 %Algorithm : Grabs all lists of words needed from the lists at lines 153-169, and then randomly selects a member from the lists to build the line. 
-fiveSentenceTypeOne([Adj1, Noun, 'is', Adj2, Adj3], Mood, Rhyme, Adj3) :-  nounList(N), adjMoodList(A, Mood), adjLyMoodList(A2, Mood), rand(Adj1, A), rand(Noun, N), rand(Adj2, A2), getLastAdj(Adj3, Mood, Rhyme).
-fiveSentenceTypeTwo([Adj1, Noun1, Verb, Adj2, Noun2], Mood, Rhyme, Noun2) :- adjMoodList(A, Mood), verbPastList(V), nounList(N), rand(Adj1, A), rand(Noun1, N), rand(Adj2, A), rand(Verb, V), getLastNoun(Noun2, Rhyme). 
-fiveSentenceTypeThree([Verb, 'the', Adj1, Adj2, Noun], Mood, Rhyme, Noun) :- nounList(N), adjMoodList(A, Mood), adjLyMoodList(A2, Mood), verbPresList(V), rand(Verb, V), rand(Adj1, A2), rand(Adj2, A), getLastNoun(Noun, Rhyme).
+fiveSentenceTypeOne([Adj1, Noun, 'is', Adj2, Adj3], Mood, Rhyme, Adj3) :-  nounList(N), adjList(A, Mood), adjLyList(A2, Mood), rand(Adj1, A), rand(Noun, N), rand(Adj2, A2), getLastAdj(Adj3, Mood, Rhyme).
+fiveSentenceTypeTwo([Adj1, Noun1, Verb, Adj2, Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), verbPastList(V), nounList(N), rand(Adj1, A), rand(Noun1, N), rand(Adj2, A), rand(Verb, V), getLastNoun(Noun2, Rhyme). 
+fiveSentenceTypeThree([Verb, 'the', Adj1, Adj2, Noun], Mood, Rhyme, Noun) :- nounList(N), adjList(A, Mood), adjLyList(A2, Mood), verbPresList(V), rand(Verb, V), rand(Adj1, A2), rand(Adj2, A), getLastNoun(Noun, Rhyme).
 
-sixSentenceTypeOne([Adj1, 'like', 'a', Adj2, Adj3, Noun], Mood, Rhyme, Noun) :- adjMoodList(A, Mood), adjLyMoodList(A2, Mood), rand(Adj1, A), rand(Adj2, A2), rand(Adj3, A), getLastNoun(Noun, Rhyme).
-sixSentenceTypeTwo([Adj, Noun, Verb, Adv, Prep, Noun2], Mood, Rhyme, Noun2) :-  adjMoodList(A, Mood), verbPastList(V), nounList(N), advList(AV), prepList(P), rand(Adj, A), rand(Noun, N), rand(Verb, V), rand(Adv, AV), rand(Prep, P), getLastNoun(Noun2, Rhyme).
-sixSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Noun], Mood, Rhyme, Noun) :- proList(P), subjList(S), advList(AV), adjMoodList(A, Mood), verbPresList(V), rand(Subj, S), rand(Adv, AV), rand(Verb, V), rand(Pro, P), rand(Adj, A), getLastNoun(Noun, Rhyme).
+sixSentenceTypeOne([Adj1, 'like', 'a', Adj2, Adj3, Noun], Mood, Rhyme, Noun) :- adjList(A, Mood), adjLyList(A2, Mood), rand(Adj1, A), rand(Adj2, A2), rand(Adj3, A), getLastNoun(Noun, Rhyme).
+sixSentenceTypeTwo([Adj, Noun, Verb, Adv, Prep, Noun2], Mood, Rhyme, Noun2) :-  adjList(A, Mood), verbPastList(V), nounList(N), advList(AV), prepList(P), rand(Adj, A), rand(Noun, N), rand(Verb, V), rand(Adv, AV), rand(Prep, P), getLastNoun(Noun2, Rhyme).
+sixSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Noun], Mood, Rhyme, Noun) :- proList(P), subjList(S), advList(AV), adjList(A, Mood), verbPresList(V), rand(Subj, S), rand(Adv, AV), rand(Verb, V), rand(Pro, P), rand(Adj, A), getLastNoun(Noun, Rhyme).
 
-sevenSentenceTypeOne([Adj1, Noun, 'is', 'as', Adj2, 'as', Noun2], Mood, Rhyme, Noun2) :- adjMoodList(A, Mood), nounList(N), rand(Adj1, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
-sevenSentenceTypeTwo([Pro, Adj, Noun, 'is', 'like', Adj2, Noun2], Mood, Rhyme, Noun2) :- adjMoodList(A, Mood), nounList(N), proList(P), rand(Pro, P), rand(Adj, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
-sevenSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Adj2, Noun], Mood, Rhyme, Noun) :-  subjList(S), advList(A), verbPresList(V), proList(P), adjLyMoodList(AL, Mood), adjMoodList(AJ, Mood), rand(Subj, S), rand(Adv, A), rand(Verb, V), rand(Pro, P), rand(Adj, AL), rand(Adj2, AJ), getLastNoun(Noun, Rhyme).
+sevenSentenceTypeOne([Adj1, Noun, 'is', 'as', Adj2, 'as', Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), nounList(N), rand(Adj1, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
+sevenSentenceTypeTwo([Pro, Adj, Noun, 'is', 'like', Adj2, Noun2], Mood, Rhyme, Noun2) :- adjList(A, Mood), nounList(N), proList(P), rand(Pro, P), rand(Adj, A), rand(Noun, N), rand(Adj2, A), getLastNoun(Noun2, Rhyme).
+sevenSentenceTypeThree([Subj, Adv, Verb, Pro, Adj, Adj2, Noun], Mood, Rhyme, Noun) :-  subjList(S), advList(A), verbPresList(V), proList(P), adjLyList(AL, Mood), adjList(AJ, Mood), rand(Subj, S), rand(Adv, A), rand(Verb, V), rand(Pro, P), rand(Adj, AL), rand(Adj2, AJ), getLastNoun(Noun, Rhyme).
 
 %Instead of printing the poem as a variable binded 2d array, we will format it nicely in the console. (201-211) Inspired by CSG (Reference above).
 %The poem is generated as a list of lists. This function calls formatLineOutput on each list, and then prints a new line.

@@ -217,7 +217,7 @@ formatLineOutput([H|T]) :-
 	write(" "),
 	formatLineOutput(T).
 
-%Custom function for random selection from list. Inspired by CSG (221-224).
+%Custom function for random selection from list. The idea of random selection from list is from CSG, so this is "semi-inspired" by CSG (221-224).
 rand(X, Lst) :-
 	length(Lst, L),
 	random(0, L, L1),
